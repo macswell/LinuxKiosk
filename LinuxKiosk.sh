@@ -87,7 +87,7 @@ parse_input_file() {
                 download_file "$line"
                 ;;
             *"<script>"*)
-                script=$(echo "$line" | sed -e 's/<script>\(.*\)<\/script>/\1/')
+                script=$(echo "$line" | sed -e 's/<script>\(.*\)<\/script>/\1/' | sed -e 's/^[[:space:]]*//')
                 scripts+=("$script")
                 ;;
             *)
