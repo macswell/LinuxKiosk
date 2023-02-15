@@ -16,6 +16,7 @@ temp_dir="Linux Kiosk Temp"
 install_packages() {
     for package in "$@"
     do
+        package=$(echo "$package" | sed -e 's/^[[:space:]]*//')
         if ! sudo apt-get install -y "$package" >> "$log_file" 2>&1; then
             echo "Error installing package $package. Aborting script." >&2
             remove_downloaded_files
@@ -27,8 +28,8 @@ install_packages() {
 # Download a file using wget
 download_file() {
     local tag="$1"
-    local filename=$(echo "$tag" | sed -e 's/.*name="\([^"]*\)".*/\1/')
-    local url=$(echo "$tag" | sed -e 's/.*url="\([^"]*\)".*/\1/')
+    local filename=$(echo "$tag" | sed -e 's/.*name="\([^"]*\)".*/\1/' | sed -e 's/^[[:space:]]*//')
+    local url=$(echo "$tag" | sed -e 's/.*url="\([^"]*\)".*/\1/' | sed -e 's/^[[:space:]]*//')
     if ! wget -P "$temp_dir" -q --show-progress "$url" -O "$filename" >> "$log_file" 2>&1; then
         echo "Error downloading file $filename from $url. Aborting script." >&2
         remove_downloaded_files
@@ -36,10 +37,10 @@ download_file() {
     fi
 }
 
-
 # Run a script
 run_script() {
     local script="$1"
+    script=$(echo "$script" | sed -e 's/^[[:space:]]*//')
     chmod +x "$script"
     if ! ./"$script" >> "$log_file" 2>&1; then
         echo "Error running script $script. Aborting script." >&2
@@ -61,7 +62,7 @@ remove_packages() {
     local packages=()
     while IFS= read -r line; do
         if [[ "$line" == *"<package>"* ]]; then
-            package=$(echo "$line" | sed -e 's/<package>\(.*\)<\/package>/\1/')
+            package=$(echo "$line" | sed -e 's/<package>\(.*\)<\/package>/\1/' | sed -e 's/^[[:space:]]*//')
             packages+=("$package")
         fi
     done < "$input_file"
@@ -78,7 +79,7 @@ parse_input_file() {
     while IFS= read -r line; do
         case "$line" in
             *"<package>"*)
-                package=$(echo "$line" | sed -e 's/<package>\(.*\)<\/package>/\1/')
+                package=$(echo "$line" | sed -e 's/<package>\(.*\)<\/package>/\1/' | sed -e 's/^[[:space:]]*//')
                 packages+=("$package")
                 ;;
             *"<file name=\""*)
