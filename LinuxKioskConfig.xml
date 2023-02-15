@@ -4,7 +4,11 @@
   </section>
   <section>
     <package>openbox</package>
-    <file name="OpenBoxConfig.sh" url="https://github.com/macswell/LinuxKiosk/blob/master/openbox/OpenBoxConfig.sh" />
-    <script>OpenBoxConfig.sh.sh</script>
+    <file name="OpenBoxConfig.sh" url="https://raw.githubusercontent.com/macswell/LinuxKiosk/master/openbox/OpenBoxConfig.sh" />
+    <script>OpenBoxConfig.sh</script>
+  </section>
+  <section>
+    <file name="CreateSudoer.sh" url="https://raw.githubusercontent.com/macswell/LinuxKiosk/master/other/CreateSudoer.sh" />
+    <script>CreateSudoer.sh.sh</script>
   </section>
 </applications>
