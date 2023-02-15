@@ -21,4 +21,4 @@ new_keybind="<keybind key=\"$keybinding\" name=\"Open_Mate_Term\">
 sed -i "/<\/keyboard>/i $new_keybind" /etc/xdg/openbox/rc.xml
 
 # Add Tint2 to openbox autostart
-sed -i '/tint2 &/!s/^/tint2 \&\n/' ~/etc/xdg/openbox/autostart
+sed -i '/tint2 &/!s/^/tint2 \&\n/' /etc/xdg/openbox/autostart
