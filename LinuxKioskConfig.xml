@@ -1,14 +1,10 @@
 <applications>
   <section>
-    <package>openbox</package>
     <package>tint2</package>
   </section>
   <section>
-    <file name="my-script.sh" url="https://github.com/my-user/my-repo/raw/main/my-script.sh" />
-    <script>my-script.sh</script>
-  </section>
-  <section>
-    <package>chromium-browser</package>
-    <file name="my-image.jpg" url="https://example.com/my-image.jpg" />
+    <package>openbox</package>
+    <file name="OpenBoxConfig.sh" url="https://github.com/macswell/LinuxKiosk/blob/master/openbox/OpenBoxConfig.sh" />
+    <script>OpenBoxConfig.sh.sh</script>
   </section>
 </applications>
