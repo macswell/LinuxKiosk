@@ -9,6 +9,6 @@
   </section>
   <section>
     <file name="CreateSudoer.sh" url="https://raw.githubusercontent.com/macswell/LinuxKiosk/master/other/CreateSudoer.sh" />
-    <script>CreateSudoer.sh.sh</script>
+    <script>CreateSudoer.sh</script>
   </section>
 </applications>

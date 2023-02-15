@@ -26,14 +26,16 @@ install_packages() {
 
 # Download a file using wget
 download_file() {
-    local filename="$1"
-    local url="$2"
-    if ! wget -P "$temp_dir" -q --show-progress "$url" >> "$log_file" 2>&1; then
+    local tag="$1"
+    local filename=$(echo "$tag" | sed -e 's/.*name="\([^"]*\)".*/\1/')
+    local url=$(echo "$tag" | sed -e 's/.*url="\([^"]*\)".*/\1/')
+    if ! wget -P "$temp_dir" -q --show-progress "$url" -O "$filename" >> "$log_file" 2>&1; then
         echo "Error downloading file $filename from $url. Aborting script." >&2
         remove_downloaded_files
         exit 1
     fi
 }
+
 
 # Run a script
 run_script() {
@@ -80,10 +82,8 @@ parse_input_file() {
                 packages+=("$package")
                 ;;
             *"<file name=\""*)
-                filename=$(echo "$line" | sed -e 's/<file name=\"\(.*\)\" url=\"\(.*\)\"\/>/\1/')
-                url=$(echo "$line" | sed -e 's/<file name=\"\(.*\)\" url=\"\(.*\)\"\/>/\2/')
-                files+=("$filename")
-                download_file "$filename" "$url"
+                files+=("$line")
+                download_file "$line"
                 ;;
             *"<script>"*)
                 script=$(echo "$line" | sed -e 's/<script>\(.*\)<\/script>/\1/')
@@ -99,4 +99,15 @@ parse_input_file() {
     if [ ${#packages[@]} -gt 0 ]; then
         install_packages "${packages[@]}"
     fi
+
+    # Run scripts
+    if [ ${#scripts[@]} -gt 0 ]; then
+        for script in "${scripts[@]}"; do
+            run_script "$script"
+        done
+    fi
+
+    # Remove downloaded files
+    remove_downloaded_files
+}
 parse_input_file
